@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Eye Disease Detection</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0d6efd;
+            --primary-dark: #0a58ca;
+            --accent: #00d4ff;
+            --success: #28a745;
+            --danger: #dc3545;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+
+            /* 🔥 Stunning Multi-Color Animated Background */
+            background: linear-gradient(-45deg,
+                    #e0f2fe,
+                    #c0ebff,
+                    #a5d8ff,
+                    #89cfff,
+                    #69bfff,
+                    #4da9ff,
+                    #3395ff,
+                    #1e80ff,
+                    #0d6efd,
+                    #0a58ca);
+            background-size: 600% 600%;
+            animation: colorFlow 20s ease infinite;
+        }
+
+        @keyframes colorFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            25% {
+                background-position: 100% 50%;
+            }
+
+            50% {
+                background-position: 100% 100%;
+            }
+
+            75% {
+                background-position: 0% 100%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Optional: Add subtle overlay glow for extra depth */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 70%, rgba(13, 110, 253, 0.15), transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(0, 212, 255, 0.15), transparent 50%);
+            pointer-events: none;
+            animation: glowPulse 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            100% {
+                opacity: 0.9;
+            }
+        }
+
+        .main-card {
+            margin-top: 100px;
+            border-radius: 24px;
+            border: none;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px rgba(13, 110, 253, 0.18),
+                0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.5s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .main-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 35px 70px rgba(13, 110, 253, 0.25);
+        }
+
+        /* Rest of your styles remain the same (title, upload, button, etc.) */
+        .title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--accent), #00bfff, var(--primary));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 5s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes titleGlow {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .eye-icon {
+            font-size: 3.8rem;
+            color: var(--primary);
+            animation: pulseEye 2.5s infinite;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        @keyframes pulseEye {
+
+            0%,
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+
+            50% {
+                transform: scale(1.15) rotate(5deg);
+            }
+        }
+
+        /* Enhanced Upload Area */
+        .upload-zone {
+            border: 3px dashed var(--primary);
+            border-radius: 20px;
+            padding: 50px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #f8fbff, #f0f8ff);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .upload-zone:hover {
+            background: linear-gradient(135deg, #e6f7ff, #d0ebff);
+            border-color: var(--accent);
+            transform: scale(1.02);
+        }
+
+        .upload-zone i {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .upload-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .upload-hint {
+            color: #666;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .btn-detect {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(13, 110, 253, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .btn-detect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(13, 110, 253, 0.4);
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+        }
+
+        /* Result Cards */
+        .result-card {
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-success {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-left: 6px solid var(--success);
+        }
+
+        .result-error {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border-left: 6px solid var(--danger);
+        }
+
+        .confidence-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(var(--success) calc(var(--conf) * 1%), #e0e0e0 calc(var(--conf) * 1%));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--success);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.2);
+        }
+
+        .image-box {
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 25px rgba(13, 110, 253, 0.15);
+            margin-bottom: 30px;
+        }
+
+        .uploaded-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .output-box {
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.8s ease;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-left: 6px solid var(--success);
+        }
+
+        hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #0d6efd, transparent);
+            margin: 50px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+
+                <div class="card main-card p-5">
+                    <div class="text-center mb-4">
+                        <div class="eye-icon">👁️</div>
+                        <h1 class="title">Eye Disease Detection</h1>
+                        <p class="subtitle mt-3">
+                            Advanced Deep Learning model for early detection of eye conditions
+                        </p>
+                    </div>
+
+                    <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                        {% csrf_token %}
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold fs-5">Upload Retina/Eye Image</label>
+                            <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                                <i class="bi bi-cloud-arrow-up-fill"></i>
+                                <div class="upload-text">Drop your image here</div>
+                                <div class="upload-hint">or click to browse • Supports JPG, PNG</div>
+                                <input type="file" name="eye_image" id="fileInput" class="d-none" accept="image/*"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-detect text-white">
+                                <i class="bi bi-cpu me-2"></i> Analyze with AI
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Display -->
+        {% if error %}
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="result-card result-error">
+                    <i class="bi bi-exclamation-triangle-fill fs-1 text-danger mb-3"></i>
+                    <h4 class="text-danger">Detection Error</h4>
+                    <p class="mb-0">{{ error }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Success Result -->
+        {% if prediction %}
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="result-card result-success">
+                    <i class="bi bi-check-circle-fill fs-1 text-success mb-3"></i>
+                    <h4 class="text-success">AI Analysis Complete</h4>
+
+                    <!-- Image Box -->
+                    {% if image_url %}
+                    <div class="image-box text-center">
+                        <img src="{{ image_url }}" alt="Uploaded Eye Image" class="uploaded-image">
+                        <p class="text-muted mt-2">Uploaded Image for Analysis</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Output Box -->
+                    <div class="output-box">
+                        <p class="fs-5 mb-2"><strong>Detected Condition:</strong> {{ prediction }}</p>
+
+                        <div class="confidence-circle" style="--conf: {{ confidence }}">
+                            {{ confidence }}%
+                        </div>
+                        <p class="text-muted">Model Confidence Level</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>
